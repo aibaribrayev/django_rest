@@ -1,19 +1,22 @@
-from decimal import Decimal 
+"""
+Tests for models
+"""
 from django.test import TestCase
-from core import models 
+from django.contrib.auth import get_user_model
 
 
-class ModelTests(TestCase): 
+class ModelTests(TestCase):
     """Test models."""
-    def test_create_company(self): 
-        company = models.Company.objects.create(
-            name = "Sample company name",
+
+    def test_create_user_with_email_successful(self):
+        """Test creating a user with an phone_number is successful."""
+        phone_number = '+77777777777'
+        password = 'testpass123'
+        user = get_user_model().objects.create_user(
+            phone_number=phone_number,
+            password=password,
         )
-        self.assertEqual(str(company), company.name)
-    
-    def test_create_item(self): 
-        item = models.Item.objects.create(
-            name = 'Item1'
-        )
-        self.assertEqual(str(item), item.name)
-    
+
+        self.assertEqual(user.phone_number, phone_number)
+        self.assertTrue(user.check_password(password))
+
